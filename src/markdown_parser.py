@@ -24,6 +24,9 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return new_nodes
 
 
+# TODO: split_nodes_images and split_nodes_link
+
+
 # Regex dark magic to extract markdonw images
 def extract_markdown_images(text):
     return re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
