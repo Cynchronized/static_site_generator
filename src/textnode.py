@@ -4,12 +4,12 @@ from htmlnode import LeafNode
 
 # All valid text types of markdown
 class TextType(Enum):
-    NORMAL_TEXT = "normal"
-    BOLD_TEXT = "bold"
-    ITALIC_TEXT = "italic"
-    CODE_TEXT = "code"
-    LINKS = "link"
-    IMAGES = "image"
+    TEXT = "normal"
+    BOLD = "bold"
+    ITALIC = "italic"
+    CODE = "code"
+    LINK = "link"
+    IMAGE = "image"
 
 
 class TextNode:
@@ -31,17 +31,17 @@ class TextNode:
 
 def text_node_to_html_node(text_node):
     match text_node.text_type:
-        case TextType.NORMAL_TEXT:
+        case TextType.TEXT:
             return LeafNode(None, text_node.text)
-        case TextType.BOLD_TEXT:
+        case TextType.BOLD:
             return LeafNode("b", text_node.text)
-        case TextType.ITALIC_TEXT:
+        case TextType.ITALIC:
             return LeafNode("i", text_node.text)
-        case TextType.CODE_TEXT:
+        case TextType.CODE:
             return LeafNode("code", text_node.text)
-        case TextType.LINKS:
+        case TextType.LINK:
             return LeafNode("a", text_node.text, {"href": f"{text_node.url}"})
-        case TextType.IMAGES:
+        case TextType.IMAGE:
             return LeafNode(
                 "img", "", {"src": f"{text_node.url}", "alt": f"{text_node.text}"}
             )
