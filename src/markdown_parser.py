@@ -1,5 +1,33 @@
+from enum import Enum
 from textnode import TextType, TextNode
 import re
+
+
+class BlockType(Enum):
+    PARAGRAPH = "paragraph"
+    HEADING = "heading"
+    CODE = "code"
+    QUOTE = "quote"
+    UNORDERED_LIST = "unordered_list"
+    ORDERED_LIST = "ordered_list"
+
+
+# TODO: function that takes a single block of markdown as input and returns the BlockType
+
+
+def block_to_block_type(block):
+    pass
+
+
+def markdown_to_blocks(markdown):
+    blocks = markdown.split("\n\n")
+    filtered_blocks = []
+    for block in blocks:
+        if block == "":
+            continue
+        block = block.strip()
+        filtered_blocks.append(block)
+    return filtered_blocks
 
 
 # Converts a raw string of markdown into a list of TextNode objects

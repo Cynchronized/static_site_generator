@@ -3,6 +3,7 @@ import unittest
 from markdown_parser import (
     extract_markdown_images,
     extract_markdown_links,
+    markdown_to_blocks,
     split_nodes_image,
     split_nodes_link,
     split_nodes_delimiter,
@@ -12,6 +13,28 @@ from textnode import TextNode, TextType
 
 
 class test_extract_markdown_images(unittest.TestCase):
+    def test_markdown_to_blocks(self):
+        markdown = (
+            "# This is a heading\n\n"
+            + "This is a paragraph of text. It has some **bold** and *italic* words inside of it.\n\n"
+            + "* This is the first list item in a list block\n"
+            + "* This is a list item\n"
+            + "* This is another list item"
+        )
+
+        blocks = markdown_to_blocks(markdown)
+
+        self.assertListEqual(
+            [
+                "# This is a heading",
+                "This is a paragraph of text. It has some **bold** and *italic* words inside of it.",
+                "* This is the first list item in a list block\n"
+                "* This is a list item\n"
+                "* This is another list item",
+            ],
+            blocks,
+        )
+
     def test_split_nodes_delimited(self):
         node = TextNode("This is text with a `code block` word", TextType.TEXT)
         new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
