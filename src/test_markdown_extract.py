@@ -1,6 +1,8 @@
 import unittest
 
 from markdown_parser import (
+    BlockType,
+    block_to_block_type,
     extract_markdown_images,
     extract_markdown_links,
     markdown_to_blocks,
@@ -13,6 +15,36 @@ from textnode import TextNode, TextType
 
 
 class test_extract_markdown_images(unittest.TestCase):
+    def test_block_to_block_types_headings(self):
+        block = "### Hello World!"
+
+        self.assertEqual(block_to_block_type(block), BlockType.HEADING)
+
+    def test_block_to_block_types_code(self):
+        block = "```\n" + "This is a code block\n" + "```"
+
+        self.assertEqual(block_to_block_type(block), BlockType.CODE)
+
+    def test_block_to_block_types_quote(self):
+        block = "> Hello\n" + "> This is a quote\n" + "> Rawr"
+
+        self.assertEqual(block_to_block_type(block), BlockType.QUOTE)
+
+    def test_block_to_block_types_unordered_list(self):
+        block = "- This is a unordered list\n" + "- List item 2\n" + "- List item 3"
+
+        self.assertEqual(block_to_block_type(block), BlockType.UNORDERED_LIST)
+
+    def test_block_to_block_types_ordered_list(self):
+        block = "1. First item\n2. Second item\n3. Third item"
+
+        self.assertEqual(block_to_block_type(block), BlockType.ORDERED_LIST)
+
+    def test_block_to_block_types_paragraph(self):
+        block = "This is a normal paragraph\n" + "Rawr, I'm a cat"
+
+        self.assertEqual(block_to_block_type(block), BlockType.PARAGRAPH)
+
     def test_markdown_to_blocks(self):
         markdown = (
             "# This is a heading\n\n"

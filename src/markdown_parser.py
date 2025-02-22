@@ -12,11 +12,46 @@ class BlockType(Enum):
     ORDERED_LIST = "ordered_list"
 
 
-# TODO: function that takes a single block of markdown as input and returns the BlockType
-
-
+# Uses regex to returnt the block type of a given block
 def block_to_block_type(block):
-    pass
+    heading_block = re.findall(r"^(#{1,6})\s+(.+)$", block)
+    code_block = re.findall(r"^```(?:\s*(\w+))?\n([\s\S]*?)\n```$", block, re.MULTILINE)
+    quote_block = check_if_matches_block_pattern(block, r"^>\s*(.+)$")
+    unordered_list = check_if_matches_block_pattern(block, r"^\s*[-+*]\s+(.+)$")
+    ordered_list = check_if_ordered_list(block)
+
+    if len(heading_block) > 0:
+        return BlockType.HEADING
+    elif len(code_block) > 0:
+        return BlockType.CODE
+    elif quote_block:
+        return BlockType.QUOTE
+    elif unordered_list:
+        return BlockType.UNORDERED_LIST
+    elif ordered_list:
+        return BlockType.ORDERED_LIST
+    else:
+        return BlockType.PARAGRAPH
+
+
+def check_if_matches_block_pattern(block, pattern):
+    lines = block.split("\n")
+    for line in lines:
+        match = re.findall(f"{pattern}", line)
+        if not match:
+            return False
+
+    return True
+
+
+def check_if_ordered_list(block):
+    for i, line in enumerate(
+        block.split("\n"),
+    ):
+        match = re.findall(rf"^\s*{i + 1}\.\s+(.+)$", line)
+        if not match:
+            return False
+    return True
 
 
 def markdown_to_blocks(markdown):
