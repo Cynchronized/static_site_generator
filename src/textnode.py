@@ -2,6 +2,7 @@ from enum import Enum
 from htmlnode import LeafNode
 
 
+# All valid text types of markdown
 class TextType(Enum):
     NORMAL_TEXT = "normal"
     BOLD_TEXT = "bold"

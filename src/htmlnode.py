@@ -1,10 +1,15 @@
 class HTMLNode:
+    # Tag: The HTML tag
+    # Value: The text within the tag
+    # Children: Children nodes that are within the current tag
+    # Props: Properties of the node such as href, src, etc
     def __init__(self, tag=None, value=None, children=None, props=None):
         self.tag = tag
         self.value = value
         self.children = children
         self.props = props
 
+    # Will be implemented by the children
     def to_html(self):
         raise NotImplementedError
 
@@ -30,6 +35,7 @@ class ParentNode(HTMLNode):
             raise ValueError("All parent nodes must have children")
 
         children_html = ""
+        # Recursively turn children into html
         for node in self.children:
             children_html += node.to_html()
 
@@ -46,6 +52,7 @@ class LeafNode(HTMLNode):
     def to_html(self):
         if self.value is None:
             raise ValueError("All leaf nodes must have a value")
+        # if no tag, then return raw text
         if self.tag is None:
             return self.value
 
