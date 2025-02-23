@@ -40,3 +40,6 @@ class TestHtmlNode(unittest.TestCase):
         )
         self.assertEqual(repr(node), expected_repr)
 
+
+if __name__ == "__main__":
+    unittest.main()
