@@ -1,10 +1,14 @@
 import os
-from os.path import isfile
 import shutil
+from os.path import isfile
+from generate_page import generate_page
 
 
 dir_path_public = "./public"
 dir_path_static = "./static"
+dir_path_content = "./content/index.md"
+dir_path_dest = "./public/index.html"
+dir_path_template = "./template.html"
 
 
 def main():
@@ -14,6 +18,8 @@ def main():
 
     print("Copying static files to public directory...")
     copy_source_directory_to_destination("./static", "./public")
+
+    generate_page(dir_path_content, dir_path_template, dir_path_dest)
 
 
 def copy_source_directory_to_destination(source, destination):
