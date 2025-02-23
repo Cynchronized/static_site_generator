@@ -1,7 +1,7 @@
 import re
-import shutil
 import os
 from markdown_blocks import markdown_to_html_node
+from pathlib import Path
 
 
 # Extract the title by the h1 header
@@ -32,8 +32,26 @@ def generate_page(from_path, template_path, dest_path):
     page = template.replace("{{ Title }}", title)
     page = page.replace("{{ Content }}", html_string)
 
-    if not os.path.dirname(dest_path):
-        os.makedirs(dest_path)
+    dest_dir_path = os.path.dirname(dest_path)
+    if dest_dir_path != "":
+        os.makedirs(dest_dir_path, exist_ok=True)
 
     dest = open(dest_path, "w")
     dest.write(page)
+    dest.close()
+
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    for file in os.listdir(dir_path_content):
+        content_path = os.path.join(dir_path_content, file)
+        content_base = Path(dir_path_content)
+        file_path = Path(content_path).relative_to(content_base)
+
+        if os.path.isfile(content_path):
+            new_destination = os.path.join(
+                dest_dir_path, file_path.with_suffix(".html")
+            )
+            generate_page(content_path, template_path, new_destination)
+        else:
+            new_destination = os.path.join(dest_dir_path, file_path)
+            generate_pages_recursive(content_path, template_path, new_destination)
